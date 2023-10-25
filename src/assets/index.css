@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.active {
+  @apply bg-weather-primary;
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 8px;

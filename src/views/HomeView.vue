@@ -3,6 +3,7 @@
     <div class="pt-4 mb-8 relative">
       <input
         :disabled="isLoading"
+        @keydown="handleKeyDown"
         autofocus
         @input="getSearchResults"
         v-model="searchQuery"
@@ -20,9 +21,10 @@
         class="absolute bg-weather-secondary text-white w-full shadow-md py-2 px-1 top-[66px]"
       >
         <li
-          v-for="searchResult in searchResults"
+          v-for="(searchResult, index) in searchResults"
           :key="searchResult.id"
-          class="py-2 cursor-pointer hover:bg-weather-primary p-2"
+          class="py-2 cursor-pointer p-2 hover:bg-weather-primary"
+          :class="{ active: index === selectedItemIndex }"
           @click="previewCity(searchResult)"
         >
           {{ searchResult.place_name }}
@@ -58,7 +60,7 @@ const DELAY_SEARCH_TIME = 400;
 
 const getSearchResults = () => {
   clearTimeout(queryTimeout.value);
-
+  selectedItemIndex.value = -1;
   queryTimeout.value = setTimeout(async () => {
     if (searchQuery.value === "") {
       searchResults.value = null;
@@ -100,5 +102,20 @@ const pending = () => {
 };
 const resolve = () => {
   isLoading.value = false;
+};
+
+const selectedItemIndex = ref(-1);
+
+const handleKeyDown = (e) => {
+  if (
+    e.key === "ArrowDown" &&
+    selectedItemIndex.value < searchResults.value.length - 1
+  ) {
+    selectedItemIndex.value = selectedItemIndex.value + 1;
+  } else if (e.key === "ArrowUp" && selectedItemIndex.value > 0) {
+    selectedItemIndex.value = selectedItemIndex.value - 1;
+  } else if (e.key === "Enter" && selectedItemIndex.value >= 0) {
+    previewCity(searchResults.value[selectedItemIndex.value]);
+  }
 };
 </script>
