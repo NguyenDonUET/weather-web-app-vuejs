@@ -4,8 +4,8 @@
       <input
         :disabled="isLoading"
         @keydown="handleKeyDown"
+        @keypress="getSearchResults"
         autofocus
-        @input="getSearchResults"
         v-model="searchQuery"
         type="text"
         placeholder="Search for a city or state"
