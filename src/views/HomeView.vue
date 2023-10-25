@@ -7,7 +7,7 @@
         autofocus
         @input="getSearchResults"
         v-model="searchQuery"
-        type="search"
+        type="text"
         placeholder="Search for a city or state"
         class="py-2 px-1 w-full bg-transparent border-b focus:border-weather-secondary focus:outline-none focus:shadow-[0px_1px_0_0_#004E71]"
       />
@@ -56,7 +56,7 @@ const queryTimeout = ref(null);
 const searchResults = ref(null);
 const searchError = ref(false);
 
-const DELAY_SEARCH_TIME = 400;
+const DELAY_SEARCH_TIME = 200;
 
 const getSearchResults = () => {
   clearTimeout(queryTimeout.value);
