@@ -1,12 +1,14 @@
 <template>
-  <div class="flex flex-col min-h-screen font-Roboto bg-weather-primary">
+  <div class="flex flex-col font-Roboto bg-weather-primary">
     <navigation></navigation>
-    <router-view></router-view>
+    <main class="container min-h-screen pb-12">
+      <router-view></router-view>
+    </main>
+    <Footer />
   </div>
 </template>
 
 <script setup>
 import Navigation from "./components/Navigation.vue";
+import Footer from "./components/Footer.vue";
 </script>
-
-<style lang="scss" scoped></style>

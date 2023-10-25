@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import CityView from "../views/CityView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -8,8 +9,26 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: HomeView,
+      meta: {
+        title: "Home",
+      },
+    },
+    {
+      path: "/weather/:city",
+      name: "CityView",
+      component: CityView,
+      meta: {
+        title: "Weather",
+      },
     },
   ],
+  scrollBehavior(to, from, savedPosition) {
+    return { top: 0 };
+  },
 });
 
+router.beforeEach((to, from, next) => {
+  document.title = `${to.meta.title} | The local weather`;
+  next();
+});
 export default router;

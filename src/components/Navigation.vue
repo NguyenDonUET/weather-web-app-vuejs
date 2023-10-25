@@ -1,5 +1,5 @@
 <template>
-  <header class="sticky top-0 bg-weather-primary shadow-lg">
+  <header class="sticky top-0 bg-weather-primary shadow-lg z-10">
     <nav class="container flex items-center justify-between text-white py-6">
       <router-link :to="{ name: 'home' }">
         <div class="flex items-center gap-3">
@@ -14,6 +14,8 @@
           class="fa-solid fa-circle-info text-xl hover:text-weather-secondary duration-150 cursor-pointer"
         ></i>
         <i
+          @click="addCity"
+          v-if="route.query.preview"
           class="fa-solid fa-plus text-xl hover:text-weather-secondary duration-150 cursor-pointer"
         ></i>
       </div>
@@ -56,6 +58,39 @@
 <script setup>
 import BaseModal from "./BaseModal.vue";
 import { ref } from "vue";
+import { v4 as uuidv4 } from "uuid";
+import { useRoute, useRouter } from "vue-router";
+
+const savedCities = ref([]);
+
+const route = useRoute();
+const router = useRouter();
+
+const addCity = () => {
+  if (localStorage.getItem(import.meta.env.VITE_LOCAL_CITIES_KEY)) {
+    savedCities.value = JSON.parse(
+      localStorage.getItem(import.meta.env.VITE_LOCAL_CITIES_KEY)
+    );
+  }
+  const locationObj = {
+    id: uuidv4(),
+    city: route.params.city,
+    coords: {
+      lat: route.query.lat,
+      lng: route.query.lng,
+    },
+  };
+  savedCities.value.push(locationObj);
+  localStorage.setItem(
+    import.meta.env.VITE_LOCAL_CITIES_KEY,
+    JSON.stringify(savedCities.value)
+  );
+  // Remove query string preview=true
+  let query = Object.assign({}, route.query);
+  delete query.preview;
+  query.id = locationObj.id;
+  router.replace({ query });
+};
 
 const modalActive = ref(false);
 
