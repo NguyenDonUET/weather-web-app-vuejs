@@ -56,7 +56,7 @@ const queryTimeout = ref(null);
 const searchResults = ref(null);
 const searchError = ref(false);
 
-const DELAY_SEARCH_TIME = 400;
+const DELAY_SEARCH_TIME = 200;
 
 const getSearchResults = () => {
   clearTimeout(queryTimeout.value);
